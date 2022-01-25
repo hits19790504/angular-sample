@@ -87,3 +87,67 @@ Conatainer コンポーネントと Presentation コンポーネントでフォ�
 $ nx g @nrwl/angular:component containers/login-page --project=auth
 $ nx g @nrwl/angular:component components/login-form --project=auth
 ```
+
+### 2-3.ログインページのルーティング設定を追加する
+
+auth.module.ts にルーティング設定を追加します。
+
+```typescript
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { LoginPageComponent } from './containers/login-page/login-page.component';
+import { LoginFormComponent } from './components/login-form/login-form.component';
+
+@NgModule({
+  imports: [
+    CommonModule,
+
+    RouterModule.forChild([
+      { path: 'login', pathMatch: 'full', component: LoginPageComponent },
+    ]),
+  ],
+  declarations: [LoginPageComponent, LoginFormComponent],
+})
+export class AuthModule {}
+```
+
+app.module.ts に LoginModule へのルーティング設定を追加します。
+
+```typescript
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { RouterModule } from '@angular/router';
+
+import { AppComponent } from './app.component';
+import { NxWelcomeComponent } from './nx-welcome.component';
+
+@NgModule({
+  declarations: [AppComponent, NxWelcomeComponent],
+  imports: [
+    BrowserModule,
+    RouterModule.forRoot(
+      [
+        {
+          path: 'auth',
+          loadChildren: () =>
+            import('@angular-sample/auth').then((m) => m.AuthModule),
+        },
+      ],
+      {
+        initialNavigation: 'enabledBlocking',
+      }
+    ),
+  ],
+  providers: [],
+  bootstrap: [AppComponent],
+})
+export class AppModule {}
+```
+
+app.component.html に<router-outlet>を追加します。
+
+```html
+<angular-sample-nx-welcome></angular-sample-nx-welcome>
+<router-outlet></router-outlet>
+```

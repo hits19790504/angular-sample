@@ -9,12 +9,9 @@ import { LoginFormComponent } from './components/login-form/login-form.component
     CommonModule,
 
     RouterModule.forChild([
-      /* {path: '', pathMatch: 'full', component: InsertYourComponentHere} */
+      { path: 'login', pathMatch: 'full', component: LoginPageComponent },
     ]),
   ],
-  declarations: [
-    LoginPageComponent,
-    LoginFormComponent
-  ],
+  declarations: [LoginPageComponent, LoginFormComponent],
 })
 export class AuthModule {}
