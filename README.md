@@ -38,3 +38,12 @@ VSCode のコマンドパレットから「Remote-Containers: Reopen in Containe
 
 - Node.js & Typescript
 - 16-bullseye
+
+### 1-2.開発ツールをインストールする
+
+開発コンテナに開発ツールをインストールします。
+Dockerfile に追記した後、VSCode のコマンドパレットから「Remote-Containers: Rebuild Container」を実行してください。
+
+```Dockerfile
+RUN npm install -g nx@13.4.6
+```
