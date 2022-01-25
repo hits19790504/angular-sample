@@ -151,3 +151,14 @@ app.component.html に<router-outlet>を追加します。
 <angular-sample-nx-welcome></angular-sample-nx-welcome>
 <router-outlet></router-outlet>
 ```
+
+### 2-4.不要なコンポーネントを削除する
+
+自動生成された nx-welcome.component.ts を削除します。
+app.module.ts と app.component.html からも記述を削除します。
+
+下記コマンドで Angular を起動して、http://127.0.0.1/auth/loginでログインページが表示されることを確認してください。
+
+```bash
+$ nx serve
+```
