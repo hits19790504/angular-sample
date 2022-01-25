@@ -1,1 +1,11 @@
-<p>employee-list works!</p>
+<table *ngIf="employeeList">
+  <tr>
+    <th>従業員ID</th>
+    <th>従業員氏名</th>
+  </tr>
+
+  <tr *ngFor="let employee of employeeList">
+    <td>{{ employee.id }}</td>
+    <td>{{ employee.name }}</td>
+  </tr>
+</table>

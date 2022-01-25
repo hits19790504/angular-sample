@@ -709,3 +709,73 @@ export class EmployeeEffects {
   constructor(private readonly actions$: Actions) {}
 }
 ```
+
+### 4-5.従業員一覧に従業員ストアを組み込む
+
+employee.module.ts に従業員ストアモジュールを追加します。
+
+```typescript
+@NgModule({
+  declarations: [EmployeesPageComponent, EmployeeListComponent],
+  imports: [CommonModule, EmployeesRoutingModule, SharedEmployeeStoreModule],
+})
+export class EmployeesModule {}
+```
+
+employees-page.component.ts と employees-page.component.html を実装します。
+
+```typescript
+@Component({
+  selector: 'angular-sample-employees-page',
+  templateUrl: './employees-page.component.html',
+  styleUrls: ['./employees-page.component.scss'],
+})
+export class EmployeesPageComponent implements OnInit {
+  employeeList$ = this.employeeFacade.allEmployee$;
+  loaded$ = this.employeeFacade.loaded$;
+
+  constructor(private readonly employeeFacade: EmployeeFacade) {}
+
+  ngOnInit(): void {
+    this.employeeFacade.init();
+  }
+}
+```
+
+```html
+<angular-sample-employee-list
+  *ngIf="loaded$ | async; else loading"
+  [employeeList]="employeeList$ | async"
+></angular-sample-employee-list>
+
+<ng-template #loading>
+  <p>読み込み中</p>
+</ng-template>
+```
+
+employees-list.component.ts と employees-list.component.html を実装します。
+
+```typescript
+@Component({
+  selector: 'angular-sample-employee-list',
+  templateUrl: './employee-list.component.html',
+  styleUrls: ['./employee-list.component.scss'],
+})
+export class EmployeeListComponent {
+  @Input() employeeList?: { id: string; name: string }[];
+}
+```
+
+```html
+<table *ngIf="employeeList">
+  <tr>
+    <th>従業員ID</th>
+    <th>従業員氏名</th>
+  </tr>
+
+  <tr *ngFor="let employee of employeeList">
+    <td>{{ employee.id }}</td>
+    <td>{{ employee.name }}</td>
+  </tr>
+</table>
+```
