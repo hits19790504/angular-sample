@@ -5,6 +5,7 @@
     "app-e2e": "apps/app-e2e",
     "auth": "libs/auth",
     "hr": "libs/hr",
-    "shared-auth-store": "libs/shared/auth-store"
+    "shared-auth-store": "libs/shared/auth-store",
+    "shared-employee-store": "libs/shared/employee-store"
   }
 }

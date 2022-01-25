@@ -653,3 +653,17 @@ hr.module.ts にルーティング設定を追加します。
 })
 export class HrModule {}
 ```
+
+### 4-3.従業員ストアを追加する
+
+従業員ストアライブラリを追加します。
+
+```bash
+$ nx g @nrwl/angular:lib shared/employee-store
+```
+
+認証ストアを追加します。
+
+```bash
+$ nx g @nrwl/angular:ngrx employee --module=libs/shared/employee-store/src/lib/shared-employee-store.module.ts --root=false --facade=true
+```

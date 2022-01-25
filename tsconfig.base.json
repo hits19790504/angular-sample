@@ -19,6 +19,9 @@
       "@angular-sample/hr": ["libs/hr/src/index.ts"],
       "@angular-sample/shared/auth-store": [
         "libs/shared/auth-store/src/index.ts"
+      ],
+      "@angular-sample/shared/employee-store": [
+        "libs/shared/employee-store/src/index.ts"
       ]
     }
   },

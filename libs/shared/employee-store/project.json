@@ -1,0 +1,26 @@
+{
+  "projectType": "library",
+  "root": "libs/shared/employee-store",
+  "sourceRoot": "libs/shared/employee-store/src",
+  "prefix": "angular-sample",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/shared/employee-store"],
+      "options": {
+        "jestConfig": "libs/shared/employee-store/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/shared/employee-store/src/**/*.ts",
+          "libs/shared/employee-store/src/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}
