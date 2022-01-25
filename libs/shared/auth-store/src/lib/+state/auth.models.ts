@@ -1,7 +1,9 @@
-/**
- * Interface for the 'Auth' data
- */
-export interface AuthEntity {
-  id: string | number; // Primary ID
+export interface Login {
+  username: string;
+  password: string;
+}
+
+export interface AccountEntity {
+  id: string;
   name: string;
 }

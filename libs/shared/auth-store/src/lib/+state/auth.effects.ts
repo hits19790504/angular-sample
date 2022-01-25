@@ -9,15 +9,19 @@ import * as AuthFeature from './auth.reducer';
 export class AuthEffects {
   init$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(AuthActions.init),
+      ofType(AuthActions.login),
       fetch({
         run: (action) => {
-          // Your custom service 'load' logic goes here. For now just return a success action...
-          return AuthActions.loadAuthSuccess({ auth: [] });
+          // TODO 認証機能を実装する
+          if (action.password !== 'success') {
+            return AuthActions.loginFailure({ error: null });
+          }
+          const account = { id: '1', name: action.username };
+          return AuthActions.loginSuccess({ account });
         },
         onError: (action, error) => {
           console.error('Error', error);
-          return AuthActions.loadAuthFailure({ error });
+          return AuthActions.loginFailure({ error });
         },
       })
     )

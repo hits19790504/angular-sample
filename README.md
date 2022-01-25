@@ -236,3 +236,146 @@ $ nx g @nrwl/angular:lib shared/auth-store
 ```bash
 $ nx g @nrwl/angular:ngrx auth --module=libs/shared/auth-store/src/lib/shared-auth-store.module.ts --root=false --facade=true
 ```
+
+### 3-3.認証ストアを実装する
+
+auth.models.ts を実装します。
+
+```typescript
+export interface Login {
+  username: string;
+  password: string;
+}
+
+export interface AccountEntity {
+  id: string;
+  name: string;
+}
+```
+
+auth.actions.ts を変更します。
+
+```typescript
+export const login = createAction('[Login Page] Login', props<Login>());
+
+export const loginSuccess = createAction(
+  '[Auth/API] Login Success',
+  props<{ account: AccountEntity }>()
+);
+
+export const loginFailure = createAction(
+  '[Auth/API] Login Failure',
+  props<{ error: unknown }>()
+);
+```
+
+auth.effects.ts を変更します。
+
+```typescript
+@Injectable()
+export class AuthEffects {
+  init$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.login),
+      fetch({
+        run: (action) => {
+          // TODO 認証機能を実装する
+          if (action.password !== 'success') {
+            return AuthActions.loginFailure({ error: null });
+          }
+          const account = { id: '1', name: action.username };
+          return AuthActions.loginSuccess({ account });
+        },
+        onError: (action, error) => {
+          console.error('Error', error);
+          return AuthActions.loginFailure({ error });
+        },
+      })
+    )
+  );
+
+  constructor(private readonly actions$: Actions) {}
+}
+```
+
+auth.reducer.ts を変更します。
+
+```typescript
+export const AUTH_FEATURE_KEY = 'auth';
+
+export interface State {
+  account?: AccountEntity | null;
+  error?: unknown | null;
+  isLogedIn: boolean;
+}
+
+export interface AuthPartialState {
+  readonly [AUTH_FEATURE_KEY]: State;
+}
+
+export const initialState: State = { isLogedIn: false };
+
+const authReducer = createReducer(
+  initialState,
+  on(AuthActions.loginSuccess, (state, { account }) => ({
+    ...state,
+    account,
+    error: null,
+    isLogedIn: true,
+  })),
+  on(AuthActions.loginFailure, (state, { error }) => ({
+    ...state,
+    account: null,
+    error,
+    isLogedIn: false,
+  }))
+);
+
+export function reducer(state: State | undefined, action: Action) {
+  return authReducer(state, action);
+}
+```
+
+auth.selectors.ts を変更します。
+
+```typescript
+export const getAuthState = createFeatureSelector<State>(AUTH_FEATURE_KEY);
+
+export const getAccount = createSelector(
+  getAuthState,
+  (state: State) => state.account
+);
+
+export const getError = createSelector(
+  getAuthState,
+  (state: State) => state.error
+);
+
+export const getIsLoggedIn = createSelector(
+  getAuthState,
+  (state: State) => state.isLogedIn
+);
+```
+
+auth.facade.ts を変更する。
+
+```typescript
+@Injectable()
+export class AuthFacade {
+  account$ = this.store.pipe(select(AuthSelectors.getAccount));
+  error$ = this.store.pipe(select(AuthSelectors.getError));
+  isLogedIn$ = this.store.pipe(select(AuthSelectors.getIsLoggedIn));
+
+  success$ = this.actions$.pipe(ofType(AuthActions.loginSuccess));
+  failure$ = this.actions$.pipe(ofType(AuthActions.loginFailure));
+
+  constructor(
+    private readonly store: Store,
+    private readonly actions$: Actions
+  ) {}
+
+  login(username: string, password: string): void {
+    this.store.dispatch(AuthActions.login({ username, password }));
+  }
+}
+```

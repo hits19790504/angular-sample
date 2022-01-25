@@ -1,14 +1,14 @@
 import { createAction, props } from '@ngrx/store';
-import { AuthEntity } from './auth.models';
+import { AccountEntity, Login } from './auth.models';
 
-export const init = createAction('[Auth Page] Init');
+export const login = createAction('[Login Page] Login', props<Login>());
 
-export const loadAuthSuccess = createAction(
-  '[Auth/API] Load Auth Success',
-  props<{ auth: AuthEntity[] }>()
+export const loginSuccess = createAction(
+  '[Auth/API] Login Success',
+  props<{ account: AccountEntity }>()
 );
 
-export const loadAuthFailure = createAction(
-  '[Auth/API] Load Auth Failure',
-  props<{ error: any }>()
+export const loginFailure = createAction(
+  '[Auth/API] Login Failure',
+  props<{ error: unknown }>()
 );
