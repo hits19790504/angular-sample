@@ -78,3 +78,12 @@ extensions.json にも同様に設定してください。
 ```bash
 $ nx g @nrwl/angular:lib auth --lazy --routing
 ```
+
+### 2-2.ログインページのコンポーネントを追加する
+
+Conatainer コンポーネントと Presentation コンポーネントでフォルダを分けます。
+
+```bash
+$ nx g @nrwl/angular:component containers/login-page --project=auth
+$ nx g @nrwl/angular:component components/login-form --project=auth
+```
