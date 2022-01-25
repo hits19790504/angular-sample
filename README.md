@@ -162,3 +162,52 @@ app.module.ts と app.component.html からも記述を削除します。
 ```bash
 $ nx serve
 ```
+
+### 2-5.ログインページを実装する
+
+login-form.component.html と login-form.component.ts を実装します。
+
+```html
+<input #username placeholder="ユーザー名" type="text" />
+<input #password placeholder="パスワード" type="password" />
+<button
+  (click)="login.emit({ username: username.value, password: password.value })"
+>
+  ログイン
+</button>
+```
+
+```typescript
+import { Component, EventEmitter, Output } from '@angular/core';
+
+@Component({
+  selector: 'angular-sample-login-form',
+  templateUrl: './login-form.component.html',
+  styleUrls: ['./login-form.component.scss'],
+})
+export class LoginFormComponent {
+  @Output() login = new EventEmitter<{ username: string; password: string }>();
+}
+```
+
+login-page.component.html と login-page.component.ts を実装します。
+
+```html
+<angular-sample-login-form (login)="login($event)"></angular-sample-login-form>
+```
+
+```typescript
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'angular-sample-login-page',
+  templateUrl: './login-page.component.html',
+  styleUrls: ['./login-page.component.scss'],
+})
+export class LoginPageComponent {
+  login(event: { username: string; password: string }): void {
+    // TODO 認証機能を組み込む
+    console.log(event);
+  }
+}
+```

@@ -1,1 +1,7 @@
-<p>login-form works!</p>
+<input #username placeholder="ユーザー名" type="text" />
+<input #password placeholder="パスワード" type="password" />
+<button
+  (click)="login.emit({ username: username.value, password: password.value })"
+>
+  ログイン
+</button>
