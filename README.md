@@ -470,3 +470,76 @@ export class LoginPageComponent implements OnDestroy {
   [error]="error$ | async"
 ></angular-sample-login-form>
 ```
+
+### 3-5.認証サービスを追加する
+
+認証 API を呼び出す認証サービスを追加します。
+
+```bash
+$ nx g @nrwl/angular:service services/auth-api --project=shared-auth-store
+```
+
+生成された auth-api.service.ts を変更します。
+
+```typescript
+@Injectable()
+export class AuthApiService {
+  login(
+    username: string,
+    password: string
+  ): Observable<{ id: string; name: string }> {
+    // TODO 認証APIを呼び出す
+    if (password !== 'success') {
+      throw new Error('Login failure.');
+    }
+    return of({ id: '1', name: username });
+  }
+}
+```
+
+shared-auth-store.module.ts に AuthApiService を追加します。
+
+```typescript
+@NgModule({
+  imports: [
+    CommonModule,
+    StoreModule.forFeature(fromAuth.AUTH_FEATURE_KEY, fromAuth.reducer),
+    EffectsModule.forFeature([AuthEffects]),
+  ],
+  providers: [AuthFacade, AuthApiService],
+})
+export class SharedAuthStoreModule {}
+```
+
+auth.effects.ts に認証処理を組み込みます。
+
+```typescript
+@Injectable()
+export class AuthEffects {
+  init$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.login),
+      fetch({
+        run: (action) => {
+          return this.authApiService
+            .login(action.username, action.password)
+            .pipe(
+              map((account) => {
+                return AuthActions.loginSuccess({ account });
+              })
+            );
+        },
+        onError: (action, error) => {
+          console.error('Error', error);
+          return AuthActions.loginFailure({ error });
+        },
+      })
+    )
+  );
+
+  constructor(
+    private readonly actions$: Actions,
+    private readonly authApiService: AuthApiService
+  ) {}
+}
+```

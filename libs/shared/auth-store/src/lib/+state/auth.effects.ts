@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { createEffect, Actions, ofType } from '@ngrx/effects';
 import { fetch } from '@nrwl/angular';
+import { map } from 'rxjs';
+import { AuthApiService } from '../services/auth-api.service';
 
 import * as AuthActions from './auth.actions';
 import * as AuthFeature from './auth.reducer';
@@ -12,12 +14,13 @@ export class AuthEffects {
       ofType(AuthActions.login),
       fetch({
         run: (action) => {
-          // TODO 認証機能を実装する
-          if (action.password !== 'success') {
-            return AuthActions.loginFailure({ error: null });
-          }
-          const account = { id: '1', name: action.username };
-          return AuthActions.loginSuccess({ account });
+          return this.authApiService
+            .login(action.username, action.password)
+            .pipe(
+              map((account) => {
+                return AuthActions.loginSuccess({ account });
+              })
+            );
         },
         onError: (action, error) => {
           console.error('Error', error);
@@ -27,5 +30,8 @@ export class AuthEffects {
     )
   );
 
-  constructor(private readonly actions$: Actions) {}
+  constructor(
+    private readonly actions$: Actions,
+    private readonly authApiService: AuthApiService
+  ) {}
 }
