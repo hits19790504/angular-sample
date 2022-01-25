@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@angular-sample/auth": ["libs/auth/src/index.ts"],
+      "@angular-sample/hr": ["libs/hr/src/index.ts"],
       "@angular-sample/shared/auth-store": [
         "libs/shared/auth-store/src/index.ts"
       ]

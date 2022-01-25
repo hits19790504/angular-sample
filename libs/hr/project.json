@@ -1,0 +1,23 @@
+{
+  "projectType": "library",
+  "root": "libs/hr",
+  "sourceRoot": "libs/hr/src",
+  "prefix": "angular-sample",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/hr"],
+      "options": {
+        "jestConfig": "libs/hr/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/hr/src/**/*.ts", "libs/hr/src/**/*.html"]
+      }
+    }
+  },
+  "tags": []
+}

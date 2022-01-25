@@ -543,3 +543,57 @@ export class AuthEffects {
   ) {}
 }
 ```
+
+## 4.従業員一覧ページを追加する
+
+### 4-1.人事給与モジュールを追加する
+
+サブシステム毎にモジュールを作成します。
+
+```bash
+$ nx g @nrwl/angular:lib hr --lazy --routing
+```
+
+app.module.ts に人事給与モジュールを追加します。
+
+```typescript
+@NgModule({
+  declarations: [AppComponent],
+  imports: [
+    BrowserModule,
+    RouterModule.forRoot(
+      [
+        {
+          path: 'auth',
+          loadChildren: () =>
+            import('@angular-sample/auth').then((m) => m.AuthModule),
+        },
+        {
+          path: 'hr',
+          loadChildren: () =>
+            import('@angular-sample/hr').then((m) => m.HrModule),
+        },
+      ],
+      {
+        initialNavigation: 'enabledBlocking',
+      }
+    ),
+    StoreModule.forRoot(
+      {},
+      {
+        metaReducers: !environment.production ? [] : [],
+        runtimeChecks: {
+          strictActionImmutability: true,
+          strictStateImmutability: true,
+        },
+      }
+    ),
+    EffectsModule.forRoot([]),
+    !environment.production ? StoreDevtoolsModule.instrument() : [],
+    StoreRouterConnectingModule.forRoot(),
+  ],
+  providers: [],
+  bootstrap: [AppComponent],
+})
+export class AppModule {}
+```

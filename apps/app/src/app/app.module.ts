@@ -20,6 +20,11 @@ import { StoreRouterConnectingModule } from '@ngrx/router-store';
           loadChildren: () =>
             import('@angular-sample/auth').then((m) => m.AuthModule),
         },
+        {
+          path: 'hr',
+          loadChildren: () =>
+            import('@angular-sample/hr').then((m) => m.HrModule),
+        },
       ],
       {
         initialNavigation: 'enabledBlocking',
