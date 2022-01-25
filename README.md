@@ -211,3 +211,13 @@ export class LoginPageComponent {
   }
 }
 ```
+
+## 3.認証機能を実装する
+
+### 3-1.ルートストアを追加する
+
+全体の状態を管理するルートストアを追加します。
+
+```bash
+$ nx g @nrwl/angular:ngrx app --module=apps/app/src/app/app.module.ts --root=true --facade=false
+```
