@@ -47,3 +47,24 @@ Dockerfile に追記した後、VSCode のコマンドパレットから「Remot
 ```Dockerfile
 RUN npm install -g nx@13.4.6
 ```
+
+### 1-3.VSCode の拡張機能を追加する
+
+開発チーム全体で使う拡張機能を適宜追加してください。
+devcontainer.json に設定した拡張機能は開発コンテナにインストールされます。
+extensions.json にも同様に設定してください。
+
+```json
+{
+  "name": "Node.js & TypeScript",
+  ...
+  "extensions": [
+    "angular.ng-template",
+    "nrwl.angular-console",
+    "esbenp.prettier-vscode",
+    "firsttris.vscode-jest-runner",
+    "dbaeumer.vscode-eslint"
+  ],
+  ...
+}
+```
