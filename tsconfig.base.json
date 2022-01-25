@@ -15,7 +15,10 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@angular-sample/auth": ["libs/auth/src/index.ts"]
+      "@angular-sample/auth": ["libs/auth/src/index.ts"],
+      "@angular-sample/shared/auth-store": [
+        "libs/shared/auth-store/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]

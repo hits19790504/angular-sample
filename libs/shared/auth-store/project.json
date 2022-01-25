@@ -1,0 +1,26 @@
+{
+  "projectType": "library",
+  "root": "libs/shared/auth-store",
+  "sourceRoot": "libs/shared/auth-store/src",
+  "prefix": "angular-sample",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/shared/auth-store"],
+      "options": {
+        "jestConfig": "libs/shared/auth-store/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/shared/auth-store/src/**/*.ts",
+          "libs/shared/auth-store/src/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

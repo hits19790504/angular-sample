@@ -221,3 +221,18 @@ export class LoginPageComponent {
 ```bash
 $ nx g @nrwl/angular:ngrx app --module=apps/app/src/app/app.module.ts --root=true --facade=false
 ```
+
+### 3-2.認証ストアを追加する
+
+認証情報を管理する認証ストアライブラリを追加します。
+共有するライブラリは shared 配下に作成します。
+
+```bash
+$ nx g @nrwl/angular:lib shared/auth-store
+```
+
+認証ストアを追加します。
+
+```bash
+$ nx g @nrwl/angular:ngrx auth --module=libs/shared/auth-store/src/lib/shared-auth-store.module.ts --root=false --facade=true
+```

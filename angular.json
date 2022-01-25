@@ -3,6 +3,7 @@
   "projects": {
     "app": "apps/app",
     "app-e2e": "apps/app-e2e",
-    "auth": "libs/auth"
+    "auth": "libs/auth",
+    "shared-auth-store": "libs/shared/auth-store"
   }
 }
