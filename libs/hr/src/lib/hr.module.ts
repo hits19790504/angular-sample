@@ -7,7 +7,12 @@ import { RouterModule } from '@angular/router';
     CommonModule,
 
     RouterModule.forChild([
-      /* {path: '', pathMatch: 'full', component: InsertYourComponentHere} */
+      {
+        path: 'employees',
+        pathMatch: 'full',
+        loadChildren: () =>
+          import('@angular-sample/hr').then((m) => m.EmployeesModule),
+      },
     ]),
   ],
 })

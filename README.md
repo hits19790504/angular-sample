@@ -597,3 +597,59 @@ app.module.ts に人事給与モジュールを追加します。
 })
 export class AppModule {}
 ```
+
+### 4-2.従業員一覧コンポーネントを追加する
+
+従業員モジュールを人事給与ライブラリに追加します。
+
+```bash
+$ nx g @nrwl/angular:module employees --routing --project=hr
+```
+
+従業員一覧コンポーネントを追加します。
+
+```bash
+$ nx g @nrwl/angular:component employees/containers/employees-page --project=hr
+$ nx g @nrwl/angular:component employees/components/employee-list --project=hr
+```
+
+employees-routing.module.ts にルーティング設定を追加します。
+
+```typescript
+const routes: Routes = [
+  { path: '', pathMatch: 'full', component: EmployeesPageComponent },
+];
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule],
+})
+export class EmployeesRoutingModule {}
+```
+
+人事給与ライブラリの index.ts に HrModule を追加します。
+
+```typescript
+export * from './lib/hr.module';
+export * from './lib/employees/employees.module';
+```
+
+hr.module.ts にルーティング設定を追加します。
+
+```typescript
+@NgModule({
+  imports: [
+    CommonModule,
+
+    RouterModule.forChild([
+      {
+        path: 'employees',
+        pathMatch: 'full',
+        loadChildren: () =>
+          import('@angular-sample/hr').then((m) => m.EmployeesModule),
+      },
+    ]),
+  ],
+})
+export class HrModule {}
+```
