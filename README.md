@@ -379,3 +379,94 @@ export class AuthFacade {
   }
 }
 ```
+
+### 3-4.ログインページに認証処理を組み込む
+
+auth.module.ts に認証ストアモジュールを追加します。
+
+```typescript
+@NgModule({
+  imports: [
+    CommonModule,
+    SharedAuthStoreModule,
+
+    RouterModule.forChild([
+      { path: 'login', pathMatch: 'full', component: LoginPageComponent },
+    ]),
+  ],
+  declarations: [LoginPageComponent, LoginFormComponent],
+})
+export class AuthModule {}
+```
+
+login-form.component.ts と login-form.component.html を変更します。
+
+```typescript
+@Component({
+  selector: 'angular-sample-login-form',
+  templateUrl: './login-form.component.html',
+  styleUrls: ['./login-form.component.scss'],
+})
+export class LoginFormComponent {
+  @Input() error?: string | null;
+  @Output() login = new EventEmitter<{ username: string; password: string }>();
+}
+```
+
+```html
+<input #username placeholder="ユーザー名" type="text" />
+<input #password placeholder="パスワード" type="password" />
+<button
+  (click)="login.emit({ username: username.value, password: password.value })"
+>
+  ログイン
+</button>
+
+<p *ngIf="error">{{ error }}</p>
+```
+
+login-page.component.ts と login-page.component.html を変更します。
+
+```typescript
+@Component({
+  selector: 'angular-sample-login-page',
+  templateUrl: './login-page.component.html',
+  styleUrls: ['./login-page.component.scss'],
+})
+export class LoginPageComponent implements OnDestroy {
+  private readonly destroy$ = new Subject<void>();
+
+  error$: Observable<string | null>;
+
+  constructor(private readonly authFacade: AuthFacade) {
+    this.authFacade.success$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((success) => {
+        // TODO 画面遷移
+        console.log('Login success.');
+      });
+    this.error$ = this.authFacade.failure$.pipe(
+      map(
+        (failure) =>
+          '認証できませんでした。ユーザー名とパスワードを確認してください。'
+      )
+    );
+  }
+
+  login(event: { username: string; password: string }): void {
+    this.authFacade.login(event.username, event.password);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+}
+```
+
+```html
+<angular-sample-login-form
+  (login)="login($event)"
+  [error]="error$ | async"
+></angular-sample-login-form>
+```

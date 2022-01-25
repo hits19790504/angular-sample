@@ -1,1 +1,4 @@
-<angular-sample-login-form (login)="login($event)"></angular-sample-login-form>
+<angular-sample-login-form
+  (login)="login($event)"
+  [error]="error$ | async"
+></angular-sample-login-form>

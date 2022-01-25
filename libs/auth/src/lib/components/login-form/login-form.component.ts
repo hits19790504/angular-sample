@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'angular-sample-login-form',
@@ -6,5 +6,6 @@ import { Component, EventEmitter, Output } from '@angular/core';
   styleUrls: ['./login-form.component.scss'],
 })
 export class LoginFormComponent {
+  @Input() error?: string | null;
   @Output() login = new EventEmitter<{ username: string; password: string }>();
 }
