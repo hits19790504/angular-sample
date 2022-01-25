@@ -667,3 +667,45 @@ $ nx g @nrwl/angular:lib shared/employee-store
 ```bash
 $ nx g @nrwl/angular:ngrx employee --module=libs/shared/employee-store/src/lib/shared-employee-store.module.ts --root=false --facade=true
 ```
+
+### 4-4.従業員ストアを実装する
+
+employee.models.ts を変更します。
+
+```typescript
+export interface EmployeeEntity {
+  id: string;
+  name: string;
+}
+```
+
+employee.effects.ts を変更します。
+
+```typescript
+@Injectable()
+export class EmployeeEffects {
+  init$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(EmployeeActions.init),
+      fetch({
+        run: (action) => {
+          // TODO 従業員データサービスから取得する
+          return EmployeeActions.loadEmployeeSuccess({
+            employee: [
+              { id: '1', name: 'あいうえお' },
+              { id: '2', name: 'かきくけこ' },
+              { id: '3', name: 'さしすせそ' },
+            ],
+          });
+        },
+        onError: (action, error) => {
+          console.error('Error', error);
+          return EmployeeActions.loadEmployeeFailure({ error });
+        },
+      })
+    )
+  );
+
+  constructor(private readonly actions$: Actions) {}
+}
+```

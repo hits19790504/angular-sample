@@ -1,7 +1,4 @@
-/**
- * Interface for the 'Employee' data
- */
 export interface EmployeeEntity {
-  id: string | number; // Primary ID
+  id: string;
   name: string;
 }

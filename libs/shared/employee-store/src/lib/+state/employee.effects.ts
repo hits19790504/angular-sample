@@ -12,8 +12,14 @@ export class EmployeeEffects {
       ofType(EmployeeActions.init),
       fetch({
         run: (action) => {
-          // Your custom service 'load' logic goes here. For now just return a success action...
-          return EmployeeActions.loadEmployeeSuccess({ employee: [] });
+          // TODO 従業員データサービスから取得する
+          return EmployeeActions.loadEmployeeSuccess({
+            employee: [
+              { id: '1', name: 'あいうえお' },
+              { id: '2', name: 'かきくけこ' },
+              { id: '3', name: 'さしすせそ' },
+            ],
+          });
         },
         onError: (action, error) => {
           console.error('Error', error);
